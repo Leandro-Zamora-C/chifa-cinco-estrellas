@@ -28,6 +28,16 @@
         }
         .card-destacada-neon { animation: borderGlow 3s infinite linear; }
 
+        /* EFECTO DE GLOW / RESPLANDOR DORADO PARA EL LOGO */
+        @keyframes logoGlow {
+            0% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.6), 0 0 40px rgba(239, 68, 68, 0.4); }
+            50% { box-shadow: 0 0 35px rgba(245, 158, 11, 0.9), 0 0 60px rgba(245, 158, 11, 0.6); }
+            100% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.6), 0 0 40px rgba(239, 68, 68, 0.4); }
+        }
+        .logo-destacado-glow {
+            animation: logoGlow 2.5s infinite ease-in-out;
+        }
+
         .item-menu { transition: all 0.3s ease-in-out; }
         .item-menu.oculto { display: none !important; opacity: 0; transform: scale(0.95); }
 
@@ -93,23 +103,33 @@
             </div>
         </div>
 
-        <!-- Banner Chifa con LOGO CORREGIDO COMPLETO -->
-        <div data-aos="fade-down" class="bg-gradient-to-r from-red-800 via-red-900 to-amber-900 p-6 rounded-2xl shadow-xl border border-red-500/30 text-white flex flex-col md:flex-row justify-between items-center gap-6 mb-6">
-            <div class="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
-                <!-- LOGO COMPLETO Y AJUSTADO -->
-                <div class="bg-black/30 p-2 rounded-2xl border-2 border-amber-400/80 shadow-2xl flex justify-center items-center backdrop-blur-sm shrink-0">
-                    <img src="assets/images/logo-chifa.png" onerror="this.src='https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=400&q=80'" alt="Logo Chifa Cinco Estrellas" class="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 object-contain transition transform hover:scale-105 duration-300">
+        <!-- Banner Chifa con LOGO IMPACTANTE Y DORADO -->
+        <div data-aos="fade-down" class="bg-gradient-to-r from-red-900 via-black to-red-950 p-6 sm:p-8 rounded-3xl shadow-2xl border-2 border-amber-500/50 text-white flex flex-col md:flex-row justify-between items-center gap-6 mb-8 relative overflow-hidden">
+            
+            <div class="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left z-10">
+                <!-- CONTENEDOR DEL LOGO GRANDE Y RESPLANDECIENTE -->
+                <div class="logo-destacado-glow bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600 p-1.5 rounded-3xl shadow-2xl shrink-0 transition transform hover:scale-105 duration-300">
+                    <div class="bg-gray-950 p-3 rounded-[22px] flex justify-center items-center">
+                        <img src="assets/images/logo-chifa.png" onerror="this.src='https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=400&q=80'" alt="Logo Chifa Cinco Estrellas" class="w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48 object-contain drop-shadow-[0_10px_20px_rgba(245,158,11,0.5)]">
+                    </div>
                 </div>
+
                 <div>
-                    <h2 class="text-3xl md:text-4xl font-black tracking-tight drop-shadow-md text-white">Chifa Cinco Estrellas</h2>
-                    <p class="text-amber-300 font-bold text-sm sm:text-base mt-1">Especialidad en Comida Cantonesa</p>
-                    <p class="text-red-100 text-xs sm:text-sm mt-1">📍 Av. San Borja Sur N° 708 - San Borja[cite: 1]</p>
-                    <p class="text-red-200 text-xs mt-1">📞 Delivery: +51 945 036 144 / +51 988 691 612 / +51 992 426 373[cite: 1]</p>
+                    <span class="bg-amber-500/20 text-amber-400 text-xs font-black px-3 py-1 rounded-full border border-amber-500/40 uppercase tracking-widest inline-block mb-2">⭐ Especialidad Oriental</span>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white drop-shadow-lg">Chifa Cinco Estrellas</h2>
+                    <p class="text-amber-400 font-extrabold text-base sm:text-lg mt-1">Sabor Tradicional en Comida Cantonesa[cite: 1]</p>
+                    <p class="text-gray-300 text-xs sm:text-sm mt-2 flex items-center justify-center sm:justify-start gap-1">
+                        <span>📍</span> Av. San Borja Sur N° 708 - San Borja[cite: 1]
+                    </p>
+                    <p class="text-gray-400 text-xs mt-1 flex items-center justify-center sm:justify-start gap-1">
+                        <span>📞</span> Delivery: +51 945 036 144 / +51 988 691 612 / +51 992 426 373[cite: 1]
+                    </p>
                 </div>
             </div>
-            <div class="flex flex-wrap gap-2 text-xs justify-center">
-                <span class="bg-black/40 border border-white/20 px-3 py-1.5 rounded-full font-bold">💳 Precios Incluyen I.G.V.[cite: 1]</span>
-                <span class="bg-black/40 border border-white/20 px-3 py-1.5 rounded-full font-bold">🛵 Delivery & Recepciones[cite: 1]</span>
+
+            <div class="flex flex-wrap md:flex-col gap-2.5 text-xs justify-center z-10">
+                <span class="bg-black/60 border border-amber-500/40 text-amber-300 px-4 py-2 rounded-xl font-bold shadow-md flex items-center gap-1.5">💳 Precios Incluyen I.G.V.[cite: 1]</span>
+                <span class="bg-black/60 border border-amber-500/40 text-amber-300 px-4 py-2 rounded-xl font-bold shadow-md flex items-center gap-1.5">🛵 Delivery & Recepciones[cite: 1]</span>
             </div>
         </div>
 
