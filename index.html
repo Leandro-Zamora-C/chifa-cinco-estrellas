@@ -1,73 +1,542 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chifa Cinco Estrellas | Comida Cantonesa</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chifa Cinco Estrellas ⭐⭐⭐⭐⭐ | Comida Cantonesa</title>
+
+    <!-- Meta Tags PWA y Redes -->
+    <meta name="theme-color" content="#991b1b">
+    <meta property="og:title" content="Chifa Cinco Estrellas | Especialidad en Comida Cantonesa">
+    <meta property="og:description" content="Pide online los mejores platos cantoneses, sopas, bocaditos, aeropuertos y combos familiares en San Borja.">
+    <meta property="og:type" content="website">
+
+    <!-- Librerías Externas -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <style>
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .animate-marquee { display: inline-block; white-space: nowrap; animation: marquee 25s linear infinite; }
+        
+        @keyframes borderGlow {
+            0% { border-color: #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
+            50% { border-color: #f59e0b; box-shadow: 0 0 25px rgba(245, 158, 11, 0.8); }
+            100% { border-color: #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
+        }
+        .card-destacada-neon { animation: borderGlow 3s infinite linear; }
+
+        .item-menu { transition: all 0.3s ease-in-out; }
+        .item-menu.oculto { display: none !important; opacity: 0; transform: scale(0.95); }
+
+        body.modo-claro { background-color: #f8fafc !important; color: #0f172a !important; }
+        body.modo-claro header { background-color: #ffffff !important; border-color: #cbd5e1 !important; }
+        body.modo-claro .item-menu { background-color: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
+        body.modo-claro .item-menu h4 { color: #0f172a !important; }
+        body.modo-claro .input-busqueda { background-color: #ffffff !important; color: #0f172a !important; border-color: #cbd5e1 !important; }
+        
+        .btn-ripple { position: relative; overflow: hidden; }
+    </style>
 </head>
-<body>
+<body class="modo-oscuro bg-gray-950 text-gray-100 font-sans min-h-screen pb-28 selection:bg-amber-500 selection:text-black transition-colors duration-500">
 
-  <!-- Navegación -->
-  <header class="navbar">
-    <div class="logo">
-      <h1>Chifa Cinco Estrellas ⭐⭐⭐⭐⭐</h1>
-      <span>Especialidad en Comida Cantonesa</span>
-    </div>
-    <nav>
-      <a href="#menu">Carta</a>
-      <button id="cart-btn" class="btn-cart">
-        <i class="fas fa-shopping-cart"></i> (<span id="cart-count">0</span>)
-      </button>
-    </nav>
-  </header>
-
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <h2>Sabor Tradicional Oriental en San Borja</h2>
-      <p>Atendemos Almuerzos, Cenas, Recepciones y Delivery</p>
-      <a href="#menu" class="btn-primary">Ver Menú Completo</a>
-    </div>
-  </section>
-
-  <!-- Carta con Filtros -->
-  <section id="menu" class="container">
-    <h2 class="section-title">Nuestra Carta</h2>
-
-    <div class="filter-buttons">
-      <button class="btn-filter active" data-category="todos">Todos</button>
-      <button class="btn-filter" data-category="bocaditos">Bocaditos</button>
-      <button class="btn-filter" data-category="sopas">Sopas</button>
-      <button class="btn-filter" data-category="especiales">Especiales</button>
-      <button class="btn-filter" data-category="langostinos">Langostinos</button>
-      <button class="btn-filter" data-category="carnes">Carnes & Res</button>
-      <button class="btn-filter" data-category="pato">Pato Asado</button>
-      <button class="btn-filter" data-category="chaufa">Chaufas</button>
-      <button class="btn-filter" data-category="tallarines">Tallarines</button>
-      <button class="btn-filter" data-category="combos">Combos</button>
-      <button class="btn-filter" data-category="bebidas">Bebidas</button>
+    <!-- Toast Notificación -->
+    <div id="toast-notification" class="fixed top-20 right-4 z-50 bg-gray-900 border-2 border-emerald-500 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-x-80 opacity-0 pointer-events-none transition-all duration-400">
+        <span class="text-2xl animate-bounce">🥢</span>
+        <div>
+            <p id="toast-title" class="font-black text-xs text-emerald-400">¡Agregado al pedido!</p>
+            <p id="toast-desc" class="text-[11px] text-gray-300">Plato oriental listo en el carrito.</p>
+        </div>
     </div>
 
-    <div id="menu-grid" class="menu-grid"></div>
-  </section>
-
-  <!-- Modal del Carrito de Compras -->
-  <div id="cart-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn">&times;</span>
-      <h2><i class="fas fa-shopping-cart"></i> Tu Pedido</h2>
-      <div id="cart-items" class="cart-items"></div>
-      <div class="cart-summary">
-        <h3>Total: S/ <span id="cart-total">0.00</span></h3>
-        <button id="whatsapp-send-btn" class="btn-whatsapp">
-          <i class="fab fa-whatsapp"></i> Enviar Pedido por WhatsApp
-        </button>
-      </div>
+    <!-- Cinta de Anuncios -->
+    <div class="bg-gradient-to-r from-red-900 via-amber-800 to-red-900 text-amber-200 text-xs font-bold py-1.5 overflow-hidden border-b border-amber-500/20">
+        <div class="animate-marquee flex gap-8 items-center">
+            <span>🥢 Chifa Cinco Estrellas — Av. San Borja Sur N° 708, San Borja</span>
+            <span>🔥 Especialidad en Comida Cantonesa, Kamlu Wantan, Taypa y Sopas</span>
+            <span>🛵 Delivery Express al +51 945 036 144 / +51 988 691 612 / +51 992 426 373</span>
+            <span>📱 Síguenos en TikTok @Elcevichitodetiktok</span>
+        </div>
     </div>
-  </div>
 
-  <script src="script.js"></script>
+    <!-- Header Principal -->
+    <header class="bg-black/90 backdrop-blur-md sticky top-0 z-40 border-b border-gray-800 shadow-2xl">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-3">
+            <div class="flex flex-wrap items-center justify-center gap-2.5">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🐲</span>
+                    <h1 class="text-xl font-extrabold tracking-wide text-white">Chifa Cinco Estrellas ⭐⭐⭐⭐⭐</h1>
+                </div>
+                <div id="badge-estado-local" class="px-3 py-1 rounded-full text-xs font-black flex items-center gap-1.5"></div>
+                <button onclick="girarRuletaSorpresa()" class="btn-ripple bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black px-3 py-1 rounded-full text-xs shadow-lg flex items-center gap-1">
+                    🎲 ¿Qué comer hoy?
+                </button>
+                <button onclick="toggleTema()" id="btn-tema" class="btn-ripple bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 font-black px-2.5 py-1 rounded-full text-xs">
+                    ☀️ Modo Claro
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 pt-6">
+
+        <!-- Buscador -->
+        <div data-aos="fade-down" class="mb-6">
+            <div class="relative max-w-xl mx-auto">
+                <input type="text" id="input-buscador" oninput="filtrarPorBusqueda()" placeholder="🔍 Busca un plato o bebida (ej. Wantan, Kamlu, Chaufa, Tipakay, Pisco...)" class="input-busqueda w-full bg-gray-900/90 text-white placeholder-gray-400 px-5 py-3.5 pl-12 rounded-2xl border-2 border-red-500/40 focus:border-red-500 outline-none text-sm">
+                <span class="absolute left-4 top-3.5 text-lg">🔍</span>
+                <button id="btn-limpiar-busqueda" onclick="limpiarBusqueda()" class="hidden absolute right-4 top-3.5 text-gray-400 hover:text-white text-xs font-bold bg-gray-800 px-2 py-1 rounded-md">
+                    ✕ Limpiar
+                </button>
+            </div>
+        </div>
+
+        <!-- Banner Chifa -->
+        <div data-aos="fade-down" class="bg-gradient-to-r from-red-800 via-red-900 to-amber-900 p-6 rounded-2xl shadow-xl border border-red-500/30 text-white flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+            <div>
+                <h2 class="text-3xl font-black tracking-tight drop-shadow-md">Especialidad en Comida Cantonesa</h2>
+                <p class="text-red-100 text-xs sm:text-sm mt-1">Av. San Borja Sur N° 708 - San Borja | Delivery: 945 036 144 / 988 691 612 / 992 426 373</p>
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs">
+                <span class="bg-black/40 border border-white/20 px-3 py-1.5 rounded-full font-bold">💳 Precios Incluyen I.G.V.</span>
+                <span class="bg-black/40 border border-white/20 px-3 py-1.5 rounded-full font-bold">🛵 Delivery & Llevar</span>
+            </div>
+        </div>
+
+        <!-- Botones de Filtro por Categorías Generales -->
+        <div data-aos="fade-right" class="flex flex-wrap gap-2 justify-center sm:justify-start pb-4">
+            <button onclick="filtrarCategoria('todos', this)" class="btn-filtro px-3 py-1.5 rounded-full text-xs font-black bg-red-600 text-white border border-red-400">Todos</button>
+            <button onclick="filtrarCategoria('bocaditos', this)" class="btn-filtro px-3 py-1.5 rounded-full text-xs font-black bg-gray-900 text-gray-300 border border-gray-800">🥟 Bocaditos</button>
+            <button onclick="filtrarCategoria('sopas', this)" class="btn-filtro px-3 py-1.5 rounded-full text-xs font-black bg-gray-900 text-gray-300 border border-gray-800">🍲 Sopas & Caldos</button>
+            <button onclick="filtrarCategoria('especiales', this)" class="btn-filtro px-3 py-1.5 rounded-full text-xs font-black bg-gray-900 text-gray-300 border border-gray-800">⭐ Platos Especiales</button>
+            <button onclick="filtrarCategoria('langostinos', this)" class="btn-filtro px-3 py-1.5 rounded-full text-xs font-black bg-gray-900 text-gray-300 border border-gray-800">🍤 Langostinos</button>
+            <button onclick="filtrarCategoria('plancha', this)" class="btn-filtro px-3 py-1.5 rounded-full text-xs font-black bg-gray-900 text-gray-300 border border-gray-800">🔥 A la Plancha</button>
+            <button onclick="filtrarCategoria('pollo', this)" class="btn-filtro px-3 py-1.5 rounded-full text-xs font-black bg-gray-900 text-gray-300 border border-gray-800">🍗 Pollo & Gallina</button>
+            <button onclick="filtrarCategoria('res-chancho-pato', this)" class="btn-filtro px-3 py-1.5 rounded-full text-xs font-black bg-gray-900 text-gray-300 border border-gray-800">🥩 Res, Chancho & Pato</button>
+            <button onclick="filtrarCategoria('pescado-veggie', this)" class="btn-filtro px-3 py-1.5 rounded-full text-xs font-black bg-gray-900 text-gray-300 border border-gray-800">🐟 Pescados & Veggie</button>
+            <button onclick="filtrarCategoria('tallarines-chaufa', this)" class="btn-filtro px-3 py-1.5 rounded-full text-xs font-black bg-gray-900 text-gray-300 border border-gray-800">🍜 Tallarines & Chaufa</button>
+            <button onclick="filtrarCategoria('menu-combos', this)" class="btn-filtro px-3 py-1.5 rounded-full text-xs font-black bg-gray-900 text-gray-300 border border-gray-800">🍱 Menús & Combos</button>
+            <button onclick="filtrarCategoria('bebidas', this)" class="btn-filtro px-3 py-1.5 rounded-full text-xs font-black bg-gray-900 text-gray-300 border border-gray-800">🍹 Aperitivos & Bebidas</button>
+        </div>
+
+        <!-- GRID DE PLATOS COMPLETOS -->
+        <div id="grid-platos" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Carga dinámica desde Script JS -->
+        </div>
+
+    </main>
+
+    <!-- BARRA Y MODAL DEL CARRITO DE COMPRAS -->
+    <div id="barra-carrito" class="fixed bottom-0 left-0 right-0 bg-emerald-600 text-white p-4 shadow-2xl z-40 hidden border-t border-emerald-400/30">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl animate-bounce">🛒</span>
+                <div>
+                    <p class="font-black text-sm sm:text-base"><span id="cant-items">0</span> plato(s) en tu carrito</p>
+                    <p class="text-xs text-emerald-100">Total: <strong id="total-carrito">S/ 0.00</strong></p>
+                </div>
+            </div>
+            <button onclick="abrirModal('modal-carrito-detalle')" class="btn-ripple bg-black hover:bg-gray-900 text-white font-bold px-4 py-2 rounded-xl text-xs sm:text-sm shadow-md">Ver Pedido / Enviar</button>
+        </div>
+    </div>
+
+    <!-- Modal Detalle del Carrito -->
+    <div id="modal-carrito-detalle" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex justify-center items-center p-4">
+        <div class="bg-gray-900 border border-emerald-500/50 rounded-2xl max-w-lg w-full p-6 relative shadow-2xl max-h-[90vh] overflow-y-auto flex flex-col justify-between">
+            <div>
+                <button onclick="cerrarModal('modal-carrito-detalle')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl font-bold">✕</button>
+                <h3 class="text-2xl font-black text-emerald-500 mb-4 border-b border-gray-800 pb-2 flex items-center gap-2"><span>🛒</span> Tu Pedido - Chifa Cinco Estrellas</h3>
+                <div id="lista-items-carrito" class="space-y-3 mb-6 max-h-60 overflow-y-auto pr-1"></div>
+                <div class="border-t border-gray-800 pt-3 space-y-1 text-sm">
+                    <div class="flex justify-between text-gray-300"><span>Total a Pagar:</span><strong id="subtotal-modal" class="text-emerald-400 text-base">S/ 0.00</strong></div>
+                    <p class="text-[11px] text-gray-400 mt-1">Los precios incluyen I.G.V. Consultar costo de delivery según dirección de entrega.</p>
+                </div>
+            </div>
+            <div class="mt-6 pt-4 border-t border-gray-800 space-y-3">
+                <button onclick="enviarPedidoWhatsApp()" class="btn-ripple w-full bg-emerald-500 hover:bg-emerald-600 text-black font-black py-3 rounded-xl text-sm transition flex justify-center items-center gap-2 shadow-lg"><span>📲</span> Enviar Pedido a WhatsApp</button>
+                <button onclick="vaciarCarrito()" class="btn-ripple w-full bg-gray-800 hover:bg-gray-700 text-gray-400 py-2 rounded-xl text-xs font-bold">Vaciar Carrito</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ruleta Sorpresa -->
+    <div id="modal-ruleta" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex justify-center items-center p-4">
+        <div class="bg-gray-900 border-2 border-red-500 rounded-2xl max-w-sm w-full p-6 text-center relative shadow-2xl">
+            <button onclick="cerrarModal('modal-ruleta')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl font-bold">✕</button>
+            <span class="text-5xl block mb-2 animate-bounce">🎲</span>
+            <h3 class="text-2xl font-black text-red-500">¿Qué comer hoy?</h3>
+            <p class="text-xs text-gray-400 mt-1 mb-4">Te sugerimos una especialidad oriental al azar de nuestra carta:</p>
+            <div id="caja-recomendacion" class="bg-gray-800/80 p-4 rounded-xl border border-red-500/30 min-h-[100px] flex flex-col justify-center items-center">
+                <span class="text-gray-400 text-xs">Girando la ruleta... 🎰</span>
+            </div>
+            <div id="acciones-ruleta" class="mt-4 hidden space-y-2">
+                <button id="btn-agregar-ruleta" class="btn-ripple w-full bg-red-600 hover:bg-red-700 text-white font-black py-2.5 rounded-xl text-xs shadow-md">🛒 ¡Agregar al pedido!</button>
+                <button onclick="girarRuletaSorpresa()" class="btn-ripple w-full bg-gray-800 hover:bg-gray-700 text-gray-300 py-2 rounded-xl text-xs font-bold">🔄 Probar otra recomendación</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT JS COMPLETO CON LA BASE DE DATOS DE PLATOS DEL PDF -->
+    <script>
+        AOS.init({ duration: 600, once: true });
+
+        // BASE DE DATOS EXTRAÍDA DIRECTAMENTE DEL PDF DEL CHIFA CINCO ESTRELLAS
+        const todosLosPlatos = [
+            // APERITIVOS Y BEBIDAS
+            { cat: 'bebidas', nombre: 'Pisco Sour', precio: 20.00, desc: 'Cóctel emblemático con pisco peruano.' },
+            { cat: 'bebidas', nombre: 'Pisco Sour (Biondi)', precio: 30.00, desc: 'Pisco Sour preparado con Pisco Biondi.' },
+            { cat: 'bebidas', nombre: 'Chilcano de Pisco', precio: 25.00, desc: 'Pisco, ginger ale y zumo de limón.' },
+            { cat: 'bebidas', nombre: 'Piña Colada', precio: 25.00, desc: 'Ron, crema de coco y jugo de piña.' },
+            { cat: 'bebidas', nombre: 'Sangría Jarra Grande', precio: 45.00, desc: 'Jarra grande de sangría de la casa.' },
+            { cat: 'bebidas', nombre: 'Limonada Jarra 1L (Frappé)', precio: 22.00, desc: 'Limonada helada 1 Litro en Frappé.' },
+            { cat: 'bebidas', nombre: 'Gaseosa Light o Regular', precio: 7.50, desc: 'Bebida personal en lata/botella.' },
+            { cat: 'bebidas', nombre: 'Cerveza Cuzqueña / Pilsen / Cristal', precio: 12.00, desc: 'Cerveza personal helada.' },
+            { cat: 'bebidas', nombre: 'Té Jazmín / Oolong / Té Verde (Tetera)', precio: 14.00, desc: 'Té oriental tradicional en tetera.' },
+
+            // BOCADITOS
+            { cat: 'bocaditos', nombre: 'Wantan Frito (1/2 Docena)', precio: 10.00, desc: 'Crujientes hojas de wantan frito con salsa tamarindo.' },
+            { cat: 'bocaditos', nombre: 'Wantan Frito Especial (1/2 Docena)', precio: 13.00, desc: 'Wantanes especiales fritos super crujientes.' },
+            { cat: 'bocaditos', nombre: 'Sui Cao Frito (1/2 Docena)', precio: 26.00, desc: 'Empanadillas chinas fritas compuestas de carne.' },
+            { cat: 'bocaditos', nombre: 'Siu May a Vapor (1/2 Docena)', precio: 26.00, desc: 'Bocaditos cantoneses tradicionales al vapor.' },
+            { cat: 'bocaditos', nombre: 'Siu May de Langostino (1/2 Docena)', precio: 30.00, desc: 'Siu May al vapor rellenos con jugoso langostino.' },
+            { cat: 'bocaditos', nombre: 'Ja Cao a Vapor (1/2 Docena)', precio: 30.00, desc: 'Bocaditos al vapor translúcidos rellenos de langostino.' },
+            { cat: 'bocaditos', nombre: 'Enrollado Primavera Mixto (1/2 Docena)', precio: 38.00, desc: 'Rollitos primavera crocantes fritos rellenos.' },
+            { cat: 'bocaditos', nombre: 'Min Pao Salado - Chancho Asado (1/2 Docena)', precio: 26.00, desc: 'Pan al vapor relleno de jugoso chancho asado.' },
+            { cat: 'bocaditos', nombre: 'Min Pao Dulce - Frejol Colado (1/2 Docena)', precio: 24.00, desc: 'Pan suave al vapor relleno de dulce tradicional.' },
+            { cat: 'bocaditos', nombre: 'Chicharrón de Pollo (1/2 Docena)', precio: 37.00, desc: 'Trozos de pollo crocantes sazonados al estilo oriental.' },
+
+            // SOPAS Y CALDOS
+            { cat: 'sopas', nombre: 'Sopa Wantan de Pollo', precio: 21.00, desc: 'Sopa clara con wantanes y trozos de pechuga de pollo.' },
+            { cat: 'sopas', nombre: 'Sopa Wantan Especial', precio: 27.50, desc: 'Sopa abundante con wantan, carnes mixtas y verduras.' },
+            { cat: 'sopas', nombre: 'Sopa Sui Kao Cinco Estrellas (Mixto)', precio: 27.50, desc: 'Sopa especial con bocaditos Sui Kao y carnes surtidas.' },
+            { cat: 'sopas', nombre: 'Sopa Fuchifu', precio: 25.00, desc: 'Sopa espesa cantonés con clara de huevo e hilos de pollo.' },
+            { cat: 'sopas', nombre: 'Sopa Pac Pow', precio: 27.50, desc: 'Sopa reconfortante con selectos ingredientes orientales.' },
+            { cat: 'sopas', nombre: 'Caldo de Pollo con Kion', precio: 19.00, desc: 'Caldo reparador sazonado con kion y fideos.' },
+            { cat: 'sopas', nombre: 'Caldo de Gallina con Tallarín', precio: 25.50, desc: 'Caldo concentrado con fideos, presa y huevo.' },
+
+            // PLATOS ESPECIALES
+            { cat: 'especiales', nombre: 'Kam Lu Wantan', precio: 55.00, desc: 'Wantanes fritos bañado en salsa agridulce con carnes y frutas.' },
+            { cat: 'especiales', nombre: 'Mixto Especial Cinco Estrellas (Taypa)', precio: 55.00, desc: 'Combinación especial de pollo, chancho, carne y verduras.' },
+            { cat: 'especiales', nombre: 'Pollo Chijaukay', precio: 37.00, desc: 'Pollo crocante en salsa mensí y ajonjolí.' },
+            { cat: 'especiales', nombre: 'Pollo Tipakay', precio: 41.00, desc: 'Pollo empanizado crocante en salsa tamarindo agridulce.' },
+            { cat: 'especiales', nombre: 'Pollo Cinco Estrellas', precio: 45.00, desc: 'Especialidad de la casa con sazón oriental exclusiva.' },
+            { cat: 'especiales', nombre: 'Taufu Picante (Ma Po Taufu)', precio: 49.00, desc: 'Tofu suave en salsa picante Sichuan con carne molida.' },
+
+            // LANGOSTINOS
+            { cat: 'langostinos', nombre: 'Langostino Cristal', precio: 69.00, desc: 'Langostinos salteados al punto de cocción transparente.' },
+            { cat: 'langostinos', nombre: 'Langostino Sichuan Picante', precio: 69.00, desc: 'Langostinos frescos salteados en salsa picante Sichuan.' },
+            { cat: 'langostinos', nombre: 'Langostino Saltado con Almendras', precio: 79.00, desc: 'Langostinos crocantes acompañados de almendras tostadas.' },
+            { cat: 'langostinos', nombre: 'Langostino al Ajo', precio: 65.00, desc: 'Langostinos salteados al wok en intensa salsa de ajo.' },
+
+            // A LA PLANCHA
+            { cat: 'plancha', nombre: 'Langostino con Champiñones a la Plancha', precio: 73.00, desc: 'Servido hirviendo en plancha caliente con champiñones.' },
+            { cat: 'plancha', nombre: 'Carne de Res a la Plancha', precio: 47.00, desc: 'Jugosos trozos de res cocinados a la plancha orientales.' },
+            { cat: 'plancha', nombre: 'Pollo a la Plancha', precio: 42.00, desc: 'Pechugas de pollo sazonadas servidas en plancha caliente.' },
+            { cat: 'plancha', nombre: 'Mixto a la Plancha', precio: 58.00, desc: 'Combinación de carnes y verduras servidas a la plancha.' },
+
+            // POLLO Y GALLINA
+            { cat: 'pollo', nombre: 'Pollo Limonkay', precio: 41.00, desc: 'Pollo crujiente bañado en salsa natural de limón.' },
+            { cat: 'pollo', nombre: 'Pollo Saltado con Verduras', precio: 39.00, desc: 'Trozos de pollo salteados al wok con verduras frescas.' },
+            { cat: 'pollo', nombre: 'Pollo Saltado con Piña', precio: 39.00, desc: 'Pollo salteado con trozos de piña en salsa agridulce.' },
+            { cat: 'pollo', nombre: 'Gallina Pac Chi Kay con Kion', precio: 49.00, desc: 'Gallina sancochada servida con salsa fina de kion y cebollita.' },
+
+            // RES, CHANCHO Y PATO
+            { cat: 'res-chancho-pato', nombre: 'Carne de Res Sichuan Picante', precio: 45.00, desc: 'Finas lonjas de res salteadas al wok estilo Sichuan.' },
+            { cat: 'res-chancho-pato', nombre: 'Lomo Saltado con Carne de Res', precio: 50.00, desc: 'Lomo tradicional salteado con cebolla, tomate y papas.' },
+            { cat: 'res-chancho-pato', nombre: 'Chancho Cruyoc con Piña', precio: 49.00, desc: 'Trozos de chancho crocantes fritos en salsa agridulce.' },
+            { cat: 'res-chancho-pato', nombre: 'Chancho Asado con Nabo Encurtido', precio: 50.00, desc: 'Chancho char siu con fina guarnición de nabo agridulce.' },
+            { cat: 'res-chancho-pato', nombre: 'Pato Especial Cinco Estrellas', precio: 55.00, desc: 'Pato horneado asado al estilo oriental tradicional.' },
+            { cat: 'res-chancho-pato', nombre: 'Pato Pekines', precio: 50.00, desc: 'Pato con piel crocante sazonado con especias orientales.' },
+
+            // PESCADOS Y VEGETARIANO
+            { cat: 'pescado-veggie', nombre: 'Chita al Vapor con Tausi (Entero)', precio: 110.00, desc: 'Pescado Chita entero al vapor con salsa de frejol negro.' },
+            { cat: 'pescado-veggie', nombre: 'Chita Frita Salsa 5 Sabores', precio: 115.00, desc: 'Pescado frito crocante en salsa agridulce cinco sabores.' },
+            { cat: 'pescado-veggie', nombre: 'Taufu con Verduras', precio: 33.00, desc: 'Tofu suave salteado con mezcla de verduras chinas.' },
+            { cat: 'pescado-veggie', nombre: 'Verdura Mixta Especial', precio: 49.00, desc: 'Selección de verduras orientales salteadas al wok.' },
+
+            // TALLARINES Y CHAUFA
+            { cat: 'tallarines-chaufa', nombre: 'Arroz Chaufa con Pollo', precio: 25.00, desc: 'Arroz frito al wok con huevo, cebollita china y pollo.' },
+            { cat: 'tallarines-chaufa', nombre: 'Arroz Chaufa Especial', precio: 28.00, desc: 'Arroz chaufa con carnes mixtas y salchicha china.' },
+            { cat: 'tallarines-chaufa', nombre: 'Arroz Chaufa con Langostinos', precio: 30.00, desc: 'Arroz chaufa frito salteado con langostinos frescos.' },
+            { cat: 'tallarines-chaufa', nombre: 'Aeropuerto Especial', precio: 30.00, desc: 'Mezcla de chaufa con tallarín salteado y frejolito chino.' },
+            { cat: 'tallarines-chaufa', nombre: 'Tallarín Saltado Cinco Estrellas (Mixto)', precio: 60.00, desc: 'Fideos orientales salteados con carnes mixtas y verduras.' },
+            { cat: 'tallarines-chaufa', nombre: 'Tallarín Saltado con Pollo', precio: 38.00, desc: 'Fideos chinos salteados con pechuga de pollo y verduras.' },
+
+            // MENÚS Y COMBOS
+            { cat: 'menu-combos', nombre: 'Menú M1: Chaufa de Pollo', precio: 15.00, desc: 'Incluye entrada de Sopa Woming o Wantan Frito.' },
+            { cat: 'menu-combos', nombre: 'Menú M8: Tipakay con Chaufa', precio: 18.00, desc: 'Pollo Tipakay + Arroz Chaufa + Entrada.' },
+            { cat: 'menu-combos', nombre: 'Menú M9: Chijaukay con Chaufa', precio: 18.00, desc: 'Pollo Chijaukay + Arroz Chaufa + Entrada.' },
+            { cat: 'menu-combos', nombre: 'Combo C1: Chijaukay + Tipakay + Chaufa', precio: 29.00, desc: 'Combo personal completo con Sopa Wantan o Wantan Frito.' },
+            { cat: 'menu-combos', nombre: 'Menú Familiar 2-3 Personas C', precio: 130.00, desc: '1 Kam Lu Wantan + 1 Chijaukay + 2 Chaufas + Gaseosa cortesía.' },
+            { cat: 'menu-combos', nombre: 'Menú Familiar 4-5 Personas C', precio: 245.00, desc: 'Docena Wantan + Carne Almendras + Chancho Cruyoc + Tallarín + 4 Chaufas.' }
+        ];
+
+        let carrito = [];
+        let estaAbiertoGlobal = true;
+        let audioCtx = null;
+
+        // Cargar likes locales
+        function cargarLikesLocales() {
+            todosLosPlatos.forEach((plato, idx) => {
+                const guardado = localStorage.getItem(`like_chifa_${idx}`);
+                plato.likes = guardado ? parseInt(guardado) : Math.floor(Math.random() * 300) + 150;
+            });
+        }
+        cargarLikesLocales();
+
+        // Renderizar Platos
+        function renderizarPlatos(lista) {
+            const grid = document.getElementById('grid-platos');
+            grid.innerHTML = '';
+
+            lista.forEach((p, idx) => {
+                const esDestacado = p.precio > 50 || p.nombre.includes('Cinco Estrellas') || p.nombre.includes('Kam Lu');
+                const card = document.createElement('div');
+                card.className = `item-menu cat-${p.cat} group bg-gray-900 rounded-2xl p-4 border ${esDestacado ? 'border-2 card-destacada-neon' : 'border-gray-800 hover:border-red-500/50'} flex flex-col justify-between shadow-lg`;
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start gap-2">
+                            <h4 class="font-bold text-white text-base group-hover:text-red-500 transition">${p.nombre}</h4>
+                            <button onclick="darMeGusta(${idx}, this, event)" class="btn-ripple text-xs bg-gray-800 hover:bg-red-950 border border-gray-700 px-2 py-1 rounded-full text-gray-300 transition flex items-center gap-1">
+                                ❤️ <span class="like-count">${p.likes}</span>
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">${p.desc}</p>
+                    </div>
+                    <div class="flex justify-between items-center mt-4 pt-3 border-t border-gray-800">
+                        <span class="text-emerald-400 font-black text-lg">S/ ${p.precio.toFixed(2)}</span>
+                        <button onclick="agregarAlCarrito('${p.nombre.replace(/'/g, "\\'")}', ${p.precio}, event)" class="btn-ripple bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-xl text-xs font-black transition active:scale-95 flex items-center gap-1">
+                            🛒 Agregar
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            AOS.refresh();
+        }
+
+        renderizarPlatos(todosLosPlatos);
+
+        // Feedback Sonoro Tactil
+        function reproducirSonido(tipo) {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                const ahora = audioCtx.currentTime;
+
+                if (tipo === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, ahora);
+                    osc.frequency.exponentialRampToValueAtTime(200, ahora + 0.05);
+                    gain.gain.setValueAtTime(0.15, ahora);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ahora + 0.05);
+                    osc.start(ahora); osc.stop(ahora + 0.05);
+                } else if (tipo === 'agregar') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(440, ahora);
+                    osc.frequency.setValueAtTime(880, ahora + 0.08);
+                    gain.gain.setValueAtTime(0.2, ahora);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ahora + 0.2);
+                    osc.start(ahora); osc.stop(ahora + 0.2);
+                }
+            } catch (e) {}
+        }
+
+        // Filtros por Categoria
+        function filtrarCategoria(cat, btn) {
+            reproducirSonido('click');
+            document.querySelectorAll('.btn-filtro').forEach(b => {
+                b.className = "btn-filtro px-3 py-1.5 rounded-full text-xs font-black bg-gray-900 text-gray-300 border border-gray-800";
+            });
+            btn.className = "btn-filtro px-3 py-1.5 rounded-full text-xs font-black bg-red-600 text-white border border-red-400";
+
+            if (cat === 'todos') {
+                renderizarPlatos(todosLosPlatos);
+            } else {
+                renderizarPlatos(todosLosPlatos.filter(p => p.cat === cat));
+            }
+        }
+
+        // Buscador
+        function filtrarPorBusqueda() {
+            const query = document.getElementById('input-buscador').value.toLowerCase().trim();
+            const btnLimpiar = document.getElementById('btn-limpiar-busqueda');
+            if (query.length > 0) btnLimpiar.classList.remove('hidden');
+            else btnLimpiar.classList.add('hidden');
+
+            const filtrados = todosLosPlatos.filter(p => p.nombre.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query));
+            renderizarPlatos(filtrados);
+        }
+
+        function limpiarBusqueda() {
+            document.getElementById('input-buscador').value = '';
+            filtrarPorBusqueda();
+        }
+
+        // Likes
+        function darMeGusta(idx, btn, event) {
+            event.stopPropagation();
+            reproducirSonido('click');
+            todosLosPlatos[idx].likes += 1;
+            btn.querySelector('.like-count').innerText = todosLosPlatos[idx].likes;
+            localStorage.setItem(`like_chifa_${idx}`, todosLosPlatos[idx].likes);
+        }
+
+        // Carrito
+        function agregarAlCarrito(nombre, precio, event) {
+            reproducirSonido('agregar');
+            const existe = carrito.find(i => i.nombre === nombre);
+            if (existe) existe.cantidad++;
+            else carrito.push({ nombre, precio, cantidad: 1 });
+
+            actualizarCarritoUI();
+            mostrarToast("¡Plato Agregado! 🥢", `${nombre} - S/ ${precio.toFixed(2)}`);
+
+            if (event && window.confetti) {
+                const rect = event.target.getBoundingClientRect();
+                confetti({
+                    particleCount: 20,
+                    spread: 40,
+                    origin: { x: (rect.left + rect.width / 2) / window.innerWidth, y: (rect.top + rect.height / 2) / window.innerHeight },
+                    colors: ['#ef4444', '#f59e0b', '#10b981']
+                });
+            }
+        }
+
+        function cambiarCantidad(nombre, cambio) {
+            const item = carrito.find(i => i.nombre === nombre);
+            if (item) {
+                item.cantidad += cambio;
+                if (item.cantidad <= 0) carrito = carrito.filter(i => i.nombre !== nombre);
+            }
+            actualizarCarritoUI();
+        }
+
+        function vaciarCarrito() {
+            carrito = [];
+            actualizarCarritoUI();
+            cerrarModal('modal-carrito-detalle');
+        }
+
+        function actualizarCarritoUI() {
+            const barra = document.getElementById('barra-carrito');
+            const totalMonto = carrito.reduce((acc, i) => acc + (i.precio * i.cantidad), 0);
+            const cantTotal = carrito.reduce((acc, i) => acc + i.cantidad, 0);
+
+            document.getElementById('cant-items').innerText = cantTotal;
+            document.getElementById('total-carrito').innerText = `S/ ${totalMonto.toFixed(2)}`;
+            document.getElementById('subtotal-modal').innerText = `S/ ${totalMonto.toFixed(2)}`;
+
+            if (cantTotal > 0) barra.classList.remove('hidden');
+            else barra.classList.add('hidden');
+
+            const listaModal = document.getElementById('lista-items-carrito');
+            listaModal.innerHTML = '';
+            if (carrito.length === 0) {
+                listaModal.innerHTML = `<p class="text-gray-500 text-center text-xs py-4">El carrito está vacío.</p>`;
+            } else {
+                carrito.forEach(item => {
+                    listaModal.innerHTML += `
+                        <div class="flex justify-between items-center bg-gray-800 p-3 rounded-xl text-xs border border-gray-700">
+                            <div>
+                                <p class="font-bold text-white">${item.nombre}</p>
+                                <p class="text-gray-400">S/ ${item.precio.toFixed(2)} c/u = <strong class="text-emerald-400">S/ ${(item.precio * item.cantidad).toFixed(2)}</strong></p>
+                            </div>
+                            <div class="flex items-center gap-2 bg-gray-900 p-1 rounded-lg">
+                                <button onclick="cambiarCantidad('${item.nombre.replace(/'/g, "\\'")}', -1)" class="w-6 h-6 bg-red-600/30 text-red-300 font-bold rounded">-</button>
+                                <span class="font-bold text-white px-1">${item.cantidad}</span>
+                                <button onclick="cambiarCantidad('${item.nombre.replace(/'/g, "\\'")}', 1)" class="w-6 h-6 bg-emerald-600/30 text-emerald-300 font-bold rounded">+</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        // WhatsApp Directo
+        function enviarPedidoWhatsApp() {
+            if (carrito.length === 0) return;
+            const telefonos = ["51945036144", "51988691612", "51992426373"];
+            const telefonoSelec = telefonos[0]; // Teléfono principal
+            
+            let mensaje = "¡Hola! Quisiera realizar el siguiente pedido en *Chifa Cinco Estrellas*:\n\n";
+            carrito.forEach(item => {
+                mensaje += `• ${item.cantidad}x ${item.nombre} - S/ ${(item.precio * item.cantidad).toFixed(2)}\n`;
+            });
+            const totalMonto = carrito.reduce((acc, i) => acc + (i.precio * i.cantidad), 0);
+            mensaje += `\n*Total estimado:* S/ ${totalMonto.toFixed(2)}`;
+            mensaje += `\n\nDirección para Delivery / Mesa / Para Llevar: `;
+
+            window.open(`https://wa.me/${telefonoSelec}?text=${encodeURIComponent(mensaje)}`, '_blank');
+        }
+
+        // Ruleta Sorpresa
+        function girarRuletaSorpresa() {
+            reproducirSonido('click');
+            abrirModal('modal-ruleta');
+            const caja = document.getElementById('caja-recomendacion');
+            const acciones = document.getElementById('acciones-ruleta');
+            caja.innerHTML = `<span class="text-red-500 font-bold text-sm animate-pulse">🎰 Seleccionando un plato exquisito...</span>`;
+            acciones.classList.add('hidden');
+
+            setTimeout(() => {
+                reproducirSonido('agregar');
+                const opcion = todosLosPlatos[Math.floor(Math.random() * todosLosPlatos.length)];
+                caja.innerHTML = `
+                    <h4 class="font-black text-white text-base text-red-500">${opcion.nombre}</h4>
+                    <p class="text-xs text-gray-300 my-1">${opcion.desc}</p>
+                    <span class="text-emerald-400 font-black text-lg">S/ ${opcion.precio.toFixed(2)}</span>
+                `;
+                document.getElementById('btn-agregar-ruleta').onclick = (e) => {
+                    agregarAlCarrito(opcion.nombre, opcion.precio, e);
+                    cerrarModal('modal-ruleta');
+                };
+                acciones.classList.remove('hidden');
+            }, 900);
+        }
+
+        // Modales y Utilidades
+        function abrirModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function cerrarModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        function mostrarToast(titulo, desc) {
+            const toast = document.getElementById('toast-notification');
+            document.getElementById('toast-title').innerText = titulo;
+            document.getElementById('toast-desc').innerText = desc;
+            toast.classList.remove('translate-x-80', 'opacity-0', 'pointer-events-none');
+            setTimeout(() => toast.classList.add('translate-x-80', 'opacity-0', 'pointer-events-none'), 2200);
+        }
+
+        function toggleTema() {
+            document.body.classList.toggle('modo-claro');
+            const btn = document.getElementById('btn-tema');
+            if (document.body.classList.contains('modo-claro')) {
+                btn.innerText = '🌙 Modo Oscuro';
+            } else {
+                btn.innerText = '☀️ Modo Claro';
+            }
+        }
+
+        function evaluarEstadoLocal() {
+            const hora = new Date().getHours();
+            estaAbiertoGlobal = (hora >= 11 && hora < 23); // Horario habitual Chifa 11AM - 11PM
+            const badge = document.getElementById('badge-estado-local');
+            if (estaAbiertoGlobal) {
+                badge.className = "px-3 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 animate-pulse";
+                badge.innerHTML = `🟢 ABIERTO AHORA`;
+            } else {
+                badge.className = "px-3 py-1 rounded-full text-xs font-black bg-red-500/20 text-red-400 border border-red-500/40";
+                badge.innerHTML = `🔴 CERRADO`;
+            }
+        }
+        evaluarEstadoLocal();
+    </script>
 </body>
 </html>
