@@ -1,0 +1,15 @@
+[
+  { "nombre": "Kam Lu Wantan", "categoria": "especiales", "precio": "S/ 55.00" },
+  { "nombre": "Taypa Especial a la Plancha", "categoria": "especiales", "precio": "S/ 58.00" },
+  { "nombre": "Pollo Chijaukay", "categoria": "especiales", "precio": "S/ 37.00" },
+  { "nombre": "Pollo Tipakay", "categoria": "especiales", "precio": "S/ 41.00" },
+  { "nombre": "Wantan Frito (1/2 Docena)", "categoria": "bocaditos", "precio": "S/ 10.00" },
+  { "nombre": "Siukai Frito (1/2 Docena)", "categoria": "bocaditos", "precio": "S/ 26.00" },
+  { "nombre": "Siu May a Vapor (1/2 Docena)", "categoria": "bocaditos", "precio": "S/ 26.00" },
+  { "nombre": "Sopa Wantan Especial", "categoria": "sopas", "precio": "S/ 27.50" },
+  { "nombre": "Sopa Fuchifu", "categoria": "sopas", "precio": "S/ 25.00" },
+  { "nombre": "Combo C1: Chijaukay + Tipakay + Chaufa", "categoria": "combos", "precio": "S/ 29.00" },
+  { "nombre": "Combo C7: Lomo Saltado + Chijaukay + Chaufa", "categoria": "combos", "precio": "S/ 29.00" },
+  { "nombre": "Pisco Sour", "categoria": "bebidas", "precio": "S/ 20.00" },
+  { "nombre": "Jarra de Limonada 1L (Frappé)", "categoria": "bebidas", "precio": "S/ 22.00" }
+]

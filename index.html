@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chifa Cinco Estrellas | Comida Cantonesa</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Navegación -->
+  <header class="navbar">
+    <div class="logo">
+      <h1>Chifa Cinco Estrellas ⭐⭐⭐⭐⭐</h1>
+      <span>Especialidad en Comida Cantonesa</span>
+    </div>
+    <nav>
+      <a href="#inicio">Inicio</a>
+      <a href="#menu">Carta</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="inicio" class="hero">
+    <div class="hero-content">
+      <h2>Sabor Tradicional Oriental en San Borja</h2>
+      <p>Atendemos Almuerzos, Cenas, Recepciones y Delivery</p>
+      <a href="#menu" class="btn-primary">Ver Menú y Pedir</a>
+    </div>
+  </section>
+
+  <!-- Sección de Carta/Menú -->
+  <section id="menu" class="container">
+    <h2 class="section-title">Nuestra Carta</h2>
+
+    <!-- Filtros por Categoría -->
+    <div class="filter-buttons">
+      <button class="btn-filter active" data-category="todos">Todos</button>
+      <button class="btn-filter" data-category="bocaditos">Bocaditos</button>
+      <button class="btn-filter" data-category="sopas">Sopas</button>
+      <button class="btn-filter" data-category="especiales">Platos Especiales</button>
+      <button class="btn-filter" data-category="combos">Combos Personales</button>
+      <button class="btn-filter" data-category="bebidas">Aperitivos & Bebidas</button>
+    </div>
+
+    <!-- Contenedor del Menú dinámico -->
+    <div id="menu-grid" class="menu-grid">
+      <!-- Carga dinámica vía JavaScript -->
+    </div>
+  </section>
+
+  <!-- Información de Contacto -->
+  <section id="contacto" class="contact-section">
+    <h2>Visítanos o Solicita Delivery</h2>
+    <p><i class="fas fa-map-marker-alt"></i> Av. San Borja Sur N° 708 - San Borja</p>
+    <p><i class="fas fa-phone-alt"></i> Delivery: +51 945 036 144 / +51 988 691 612 / +51 992 426 373</p>
+  </section>
+
+  <!-- Botón Flotante de WhatsApp -->
+  <a href="https://wa.me/51945036144?text=Hola,%20quisiera%20realizar%20un%20pedido%20en%20Chifa%20Cinco%20Estrellas" class="whatsapp-btn" target="_blank" rel="noopener">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <script src="script.js"></script>
+</body>
+</html>
