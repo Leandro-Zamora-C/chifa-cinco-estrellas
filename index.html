@@ -16,52 +16,57 @@
       <span>Especialidad en Comida Cantonesa</span>
     </div>
     <nav>
-      <a href="#inicio">Inicio</a>
       <a href="#menu">Carta</a>
-      <a href="#contacto">Contacto</a>
+      <button id="cart-btn" class="btn-cart">
+        <i class="fas fa-shopping-cart"></i> (<span id="cart-count">0</span>)
+      </button>
     </nav>
   </header>
 
   <!-- Hero Section -->
-  <section id="inicio" class="hero">
+  <section class="hero">
     <div class="hero-content">
       <h2>Sabor Tradicional Oriental en San Borja</h2>
       <p>Atendemos Almuerzos, Cenas, Recepciones y Delivery</p>
-      <a href="#menu" class="btn-primary">Ver Menú y Pedir</a>
+      <a href="#menu" class="btn-primary">Ver Menú Completo</a>
     </div>
   </section>
 
-  <!-- Sección de Carta/Menú -->
+  <!-- Carta con Filtros -->
   <section id="menu" class="container">
     <h2 class="section-title">Nuestra Carta</h2>
 
-    <!-- Filtros por Categoría -->
     <div class="filter-buttons">
       <button class="btn-filter active" data-category="todos">Todos</button>
       <button class="btn-filter" data-category="bocaditos">Bocaditos</button>
       <button class="btn-filter" data-category="sopas">Sopas</button>
-      <button class="btn-filter" data-category="especiales">Platos Especiales</button>
-      <button class="btn-filter" data-category="combos">Combos Personales</button>
-      <button class="btn-filter" data-category="bebidas">Aperitivos & Bebidas</button>
+      <button class="btn-filter" data-category="especiales">Especiales</button>
+      <button class="btn-filter" data-category="langostinos">Langostinos</button>
+      <button class="btn-filter" data-category="carnes">Carnes & Res</button>
+      <button class="btn-filter" data-category="pato">Pato Asado</button>
+      <button class="btn-filter" data-category="chaufa">Chaufas</button>
+      <button class="btn-filter" data-category="tallarines">Tallarines</button>
+      <button class="btn-filter" data-category="combos">Combos</button>
+      <button class="btn-filter" data-category="bebidas">Bebidas</button>
     </div>
 
-    <!-- Contenedor del Menú dinámico -->
-    <div id="menu-grid" class="menu-grid">
-      <!-- Carga dinámica vía JavaScript -->
+    <div id="menu-grid" class="menu-grid"></div>
+  </section>
+
+  <!-- Modal del Carrito de Compras -->
+  <div id="cart-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2><i class="fas fa-shopping-cart"></i> Tu Pedido</h2>
+      <div id="cart-items" class="cart-items"></div>
+      <div class="cart-summary">
+        <h3>Total: S/ <span id="cart-total">0.00</span></h3>
+        <button id="whatsapp-send-btn" class="btn-whatsapp">
+          <i class="fab fa-whatsapp"></i> Enviar Pedido por WhatsApp
+        </button>
+      </div>
     </div>
-  </section>
-
-  <!-- Información de Contacto -->
-  <section id="contacto" class="contact-section">
-    <h2>Visítanos o Solicita Delivery</h2>
-    <p><i class="fas fa-map-marker-alt"></i> Av. San Borja Sur N° 708 - San Borja</p>
-    <p><i class="fas fa-phone-alt"></i> Delivery: +51 945 036 144 / +51 988 691 612 / +51 992 426 373</p>
-  </section>
-
-  <!-- Botón Flotante de WhatsApp -->
-  <a href="https://wa.me/51945036144?text=Hola,%20quisiera%20realizar%20un%20pedido%20en%20Chifa%20Cinco%20Estrellas" class="whatsapp-btn" target="_blank" rel="noopener">
-    <i class="fab fa-whatsapp"></i>
-  </a>
+  </div>
 
   <script src="script.js"></script>
 </body>

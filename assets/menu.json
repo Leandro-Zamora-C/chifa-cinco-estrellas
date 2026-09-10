@@ -1,15 +1,56 @@
 [
-  { "nombre": "Kam Lu Wantan", "categoria": "especiales", "precio": "S/ 55.00" },
-  { "nombre": "Taypa Especial a la Plancha", "categoria": "especiales", "precio": "S/ 58.00" },
-  { "nombre": "Pollo Chijaukay", "categoria": "especiales", "precio": "S/ 37.00" },
-  { "nombre": "Pollo Tipakay", "categoria": "especiales", "precio": "S/ 41.00" },
-  { "nombre": "Wantan Frito (1/2 Docena)", "categoria": "bocaditos", "precio": "S/ 10.00" },
-  { "nombre": "Siukai Frito (1/2 Docena)", "categoria": "bocaditos", "precio": "S/ 26.00" },
-  { "nombre": "Siu May a Vapor (1/2 Docena)", "categoria": "bocaditos", "precio": "S/ 26.00" },
-  { "nombre": "Sopa Wantan Especial", "categoria": "sopas", "precio": "S/ 27.50" },
-  { "nombre": "Sopa Fuchifu", "categoria": "sopas", "precio": "S/ 25.00" },
-  { "nombre": "Combo C1: Chijaukay + Tipakay + Chaufa", "categoria": "combos", "precio": "S/ 29.00" },
-  { "nombre": "Combo C7: Lomo Saltado + Chijaukay + Chaufa", "categoria": "combos", "precio": "S/ 29.00" },
-  { "nombre": "Pisco Sour", "categoria": "bebidas", "precio": "S/ 20.00" },
-  { "nombre": "Jarra de Limonada 1L (Frappé)", "categoria": "bebidas", "precio": "S/ 22.00" }
+  { "id": 1, "nombre": "Sopa Wantan de Pollo", "categoria": "sopas", "precio": 21.00 },
+  { "id": 2, "nombre": "Sopa Wantan Especial", "categoria": "sopas", "precio": 27.50 },
+  { "id": 3, "nombre": "Sopa Sui Kao Cinco Estrellas (Mixto)", "categoria": "sopas", "precio": 27.50 },
+  { "id": 4, "nombre": "Sopa Pac Pow", "categoria": "sopas", "precio": 27.50 },
+  { "id": 5, "nombre": "Sopa Fuchifu", "categoria": "sopas", "precio": 25.00 },
+  
+  { "id": 6, "nombre": "Wantan Frito (1/2 Docena)", "categoria": "bocaditos", "precio": 10.00 },
+  { "id": 7, "nombre": "Wantan Frito Especial (1/2 Docena)", "categoria": "bocaditos", "precio": 13.00 },
+  { "id": 8, "nombre": "Enrollado Primavera Mixto (1/2 Docena)", "categoria": "bocaditos", "precio": 38.00 },
+  { "id": 9, "nombre": "Sui Kao Frito (1/2 Docena)", "categoria": "bocaditos", "precio": 26.00 },
+  { "id": 10, "nombre": "Siu May a Vapor (1/2 Docena)", "categoria": "bocaditos", "precio": 26.00 },
+  { "id": 11, "nombre": "Ja Cao a Vapor (1/2 Docena)", "categoria": "bocaditos", "precio": 30.00 },
+  { "id": 12, "nombre": "Min Pao Salado - Chancho Asado (1/2 Docena)", "categoria": "bocaditos", "precio": 26.00 },
+  
+  { "id": 13, "nombre": "Kam Lu Wantan", "categoria": "especiales", "precio": 55.00 },
+  { "id": 14, "nombre": "Mixto Especial Cinco Estrellas (Taypa)", "categoria": "especiales", "precio": 55.00 },
+  { "id": 15, "nombre": "Pollo Chijaukay", "categoria": "especiales", "precio": 37.00 },
+  { "id": 16, "nombre": "Pollo Tipakay", "categoria": "especiales", "precio": 41.00 },
+  { "id": 17, "nombre": "Pollo Cinco Estrellas", "categoria": "especiales", "precio": 45.00 },
+  { "id": 18, "nombre": "Pollo Limonkay", "categoria": "especiales", "precio": 41.00 },
+  { "id": 19, "nombre": "Taufu Picante (Ma Po Taufu)", "categoria": "especiales", "precio": 49.00 },
+  
+  { "id": 20, "nombre": "Langostino Cristal", "categoria": "langostinos", "precio": 69.00 },
+  { "id": 21, "nombre": "Langostino Sichuan Picante", "categoria": "langostinos", "precio": 69.00 },
+  { "id": 22, "nombre": "Langostino Saltado c/Almendras Chinas", "categoria": "langostinos", "precio": 79.00 },
+  { "id": 23, "nombre": "Langostino al Ajo", "categoria": "langostinos", "precio": 65.00 },
+  
+  { "id": 24, "nombre": "Carne de Res Sichuan", "categoria": "carnes", "precio": 45.00 },
+  { "id": 25, "nombre": "Carne de Res con Tausi", "categoria": "carnes", "precio": 45.00 },
+  { "id": 26, "nombre": "Lomo Saltado con Carne", "categoria": "carnes", "precio": 45.00 },
+  { "id": 27, "nombre": "Chancho Asado con Piña", "categoria": "carnes", "precio": 44.00 },
+  { "id": 28, "nombre": "Chancho Cruyoc con Piña", "categoria": "carnes", "precio": 49.00 },
+  
+  { "id": 29, "nombre": "Pato Especial Cinco Estrellas", "categoria": "pato", "precio": 55.00 },
+  { "id": 30, "nombre": "Pato Crocante", "categoria": "pato", "precio": 50.00 },
+  { "id": 31, "nombre": "Pato Pekines", "categoria": "pato", "precio": 50.00 },
+  
+  { "id": 32, "nombre": "Arroz Chaufa Especial", "categoria": "chaufa", "precio": 28.00 },
+  { "id": 33, "nombre": "Arroz Chaufa con Pollo", "categoria": "chaufa", "precio": 25.00 },
+  { "id": 34, "nombre": "Arroz Chaufa con Langostinos", "categoria": "chaufa", "precio": 30.00 },
+  { "id": 35, "nombre": "Aeropuerto Especial", "categoria": "chaufa", "precio": 30.00 },
+  
+  { "id": 36, "nombre": "Tallarin Saltado Cinco Estrellas (Mixto)", "categoria": "tallarines", "precio": 60.00 },
+  { "id": 37, "nombre": "Tallarin Saltado con Pollo", "categoria": "tallarines", "precio": 38.00 },
+  { "id": 38, "nombre": "Tallarin Saltado con Carne de Res", "categoria": "tallarines", "precio": 43.00 },
+  
+  { "id": 39, "nombre": "Combo C1: Chijaukay + Tipakay + Chaufa", "categoria": "combos", "precio": 29.00 },
+  { "id": 40, "nombre": "Combo C2: Enrollado + Tipakay + Chaufa", "categoria": "combos", "precio": 29.00 },
+  { "id": 41, "nombre": "Combo C7: Lomo Saltado de Carne + Chijaukay + Chaufa", "categoria": "combos", "precio": 29.00 },
+  
+  { "id": 42, "nombre": "Pisco Sour", "categoria": "bebidas", "precio": 20.00 },
+  { "id": 43, "nombre": "Limonada Jarra 1L (Frappé)", "categoria": "bebidas", "precio": 22.00 },
+  { "id": 44, "nombre": "Gaseosa Light o Regular", "categoria": "bebidas", "precio": 7.50 },
+  { "id": 45, "nombre": "Té Jazmín (Tetera)", "categoria": "bebidas", "precio": 14.00 }
 ]
